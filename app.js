@@ -1,0 +1,39 @@
+const express = require("express")
+const app = express()
+const jwt = require('jsonwebtoken');
+
+
+
+
+const path = require("path")
+app.set("views", path.join(__dirname, "views"))
+app.use(express.static(path.join(__dirname, "public")));
+
+const bodyParser = require("body-parser")
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const cookieParser = require("cookie-parser")
+app.use(cookieParser())
+
+const port = 3001;
+//routers
+const { usersRouter } = require("./routes/users");
+app.use("/users", usersRouter);
+
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
+app.set("view engine", "ejs");
+
+//middleware
+
+
+
+
+
+app.get("/", (req, res) => {
+    res.render("index")
+})

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <title>Todo-notater</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: #121212; /* Mørk bakgrunn */
+      color: #e0e0e0; /* Lys tekst for kontrast */
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: #1f1f1f; /* Mørkere toppfelt */
+      border-bottom: 1px solid #333;
+    }
+
+
+
+    /* Layout */
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    /* Cards */
+    .card {
+      background: #222; /* Mørk grå bakgrunn */
+      padding: 16px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: 1px solid #444;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Inputs */
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0 10px 0;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background: #333;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    /* Buttons */
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      background: #007acc; /* Blåaktig for kontrast */
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 5px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #005f99;
+    }
+
+    /* Todo items */
+    .todo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 6px;
+    }
+
+    .profillink {
+      font-size: 18px;
+      color: #ffffff;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+
+    }
+    .todo:hover {
+      background: #333;
+    }
+
+    .todo span {
+      flex: 1;
+    }
+
+    /* Completed tasks */
+    .todo.completed span {
+      text-decoration: line-through;
+      color: #777;
+    }
+
+    /* Row layout */
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row input {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+  <h1>Todo-notater</h1>
+  <div class="profile"><a class="profillink" href="users/profile">👤 Profil</a></div>
+</header>
+
+<div class="container">
+
+  <!-- Create list -->
+  <section class="card">
+    <h2>Lag ny liste</h2>
+    <button>Opprett notat</button>
+    <button>Opprett liste</button>
+  </section>
+
+  <!-- Existing lists -->
+  <section class="card">
+    <h2>Lister med notater</h2>
+    <p>1 - Skolearbeid</p>
+    <p>2 - Samfunnsfag Notater</p>
+  </section>
+
+  <!-- Todo list -->
+  <section class="card">
+    <h2>Oppretter ny Todo-liste</h2>
+
+    <label>Tittel:</label>
+    <input type="text" placeholder="Handleliste" />
+
+    <div class="todo">
+      <input type="checkbox" />
+      <span>Kjøpe melk</span>
+    </div>
+
+    <div class="todo completed">
+      <input type="checkbox" checked />
+      <span>Kjøpe brød</span>
+    </div>
+
+    <div class="todo">
+      <input type="checkbox" />
+      <span>Kjøpe egg</span>
+    </div>
+
+    <h3>Legg til oppgave</h3>
+    <div class="row">
+      <input type="text" placeholder="Ny oppgave" />
+      <button>Legg til</button>
+    </div>
+
+    <h3>Last opp fil</h3>
+    <input type="file" />
+
+  </section>
+
+</div>
+
+</body>
+</html>
