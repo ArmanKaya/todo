@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 const path = require("path")
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"))
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -26,14 +27,29 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-app.set("view engine", "ejs");
+
 
 //middleware
+app.use((req, res, next) => {
+    try {
+        const payload = jwt.verify(req.cookies.token, 'shhhhh')
+        req.user = {id: payload.id, name: payload.nickname}
+        console.log(req.user)
+    }
+
+    catch (error) {
+        req.user = {}
+    } finally {
+        console.log(req.user)
+        next()
+    }
+    
+})
 
 
 
 
 
 app.get("/", (req, res) => {
-    res.render("index")
+    res.render("index", {username: req.user.name })
 })

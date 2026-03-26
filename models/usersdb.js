@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT)")
 
 db.run("CREATE TABLE IF NOT EXISTS taskAccount (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, task TEXT)")
+db.run("CREATE TABLE IF NOT EXISTS completedTasks (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, task TEXT)")
  
 
 
@@ -40,6 +41,20 @@ async function createAccount(userId) {
     });
 }
 
+async function completedTasksInit(userId) {
+    return new Promise((resolve, reject) => {
+        db.run(
+            "INSERT INTO completedTasks (user_id, task) VALUES (?, ?)",
+            [userId, "You have not completed any tasks"],
+            function (err) {
+                if (err) reject(err);
+                else resolve(this.lastID);
+            }
+        );
+    });
+}
+
+
 async function userExists(username) {
     console.log(username, "fra db")
     return new Promise((resolve, reject) => {
@@ -51,7 +66,8 @@ async function userExists(username) {
 }
 
 async function getUserByUsername(username) {
-    const username = req.body.username
+    console.log("passes user")
+    console.log(username)
     return new Promise((resolve, reject) => {
         db.get("SELECT * FROM users WHERE name = ?", [username], (err, row) => {
             if (err) reject(err)
@@ -75,10 +91,16 @@ async function login(username, password) {
 
     if (!passwordMatch) throw new Error("Passordet er feil");
 
-    var token = jwt.sign({id: user.id, nickname: user.name, tasks: task}, 'shhhhh', {expiresIn: "10d"});
-    return token
-}
+    const taskData = await new Promise((resolve, reject) => {
+        db.get("SELECT task FROM taskAccount WHERE user_id = ?", [user.id], (err, row) => {
+            if (err) reject(err);
+            else resolve(row ? row.task : "You have no active tasks");
+        });
+    });
 
+    var token = jwt.sign({id: user.id, nickname: user.name, tasks: taskData}, 'shhhhh', {expiresIn: "10d"});
+    return token;
+}
 
 
 module.exports = {
@@ -86,5 +108,6 @@ module.exports = {
     createAccount,
     userExists,
     login,
-    getUserByUsername
+    getUserByUsername,
+    completedTasksInit
 };

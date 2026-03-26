@@ -114,6 +114,17 @@
     .row input {
       flex: 1;
     }
+
+    select {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 10px 0;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #333;
+  color: #fff;
+  font-size: 14px;
+  }
   </style>
 </head>
 <body>
@@ -121,10 +132,11 @@
 <!-- Top bar -->
 <header class="topbar">
   <h1>Todo-notater</h1>
-  <div class="profile"><a class="profillink" href="users/profile">👤 Profil</a></div>
+  <div class="profile"><a class="profillink" name="profile" href="users/profile">👤<%= username %></a></div>
 </header>
 
 <div class="container">
+<img src="bust-in-silhouette_1f464.png">
 
   <!-- Create list -->
   <section class="card">
@@ -144,8 +156,12 @@
   <section class="card">
     <h2>Oppretter ny Todo-liste</h2>
 
-    <label>Tittel:</label>
-    <input type="text" placeholder="Handleliste" />
+    <select>
+      <option disabled selected>Velg liste</option>
+      <option value="handleliste">Handleliste</option>
+      <option value="skolearbeid">Skolearbeid</option>
+      <option value="samfunnsfag">Samfunnsfag Notater</option>
+    </select>
 
     <div class="todo">
       <input type="checkbox" />
