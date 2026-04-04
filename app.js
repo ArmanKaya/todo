@@ -33,7 +33,7 @@ app.listen(port, () => {
 app.use((req, res, next) => {
     try {
         const payload = jwt.verify(req.cookies.token, 'shhhhh')
-        req.user = {id: payload.id, name: payload.nickname}
+        user = {id: payload.id, name: payload.nickname}
         console.log(req.user)
     }
 
@@ -50,6 +50,14 @@ app.use((req, res, next) => {
 
 
 
-app.get("/", (req, res) => {
-    res.render("index", {username: req.user.name })
-})
+app.get('/', (req, res) => {
+  let username = 'profile' // value if user is not authenticated 
+  
+          // checking if the user is signed in 
+    if (req.user && req.user.id) {
+    username = req.user.name; // if the user is actually signed in, their nickname from the payload will be displayed
+  }
+  
+
+  res.render('index', { username: username });
+});
