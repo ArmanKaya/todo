@@ -45,10 +45,6 @@ try{
      return res.status(400).render("login", { alert: "brukernavn eller passord er ikke gyldig"})  
   }
 
-}
-
-
-
-);
+})
 
 module.exports = { usersRouter }

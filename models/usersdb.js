@@ -5,9 +5,9 @@ var jwt = require('jsonwebtoken');
 
 db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT)")
 
-db.run("CREATE TABLE IF NOT EXISTS taskAccount (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, task TEXT)")
-db.run("CREATE TABLE IF NOT EXISTS completedTasks (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, task TEXT)")
- 
+db.run("CREATE TABLE IF NOT EXISTS taskAccount (listid INTEGER PRIMARY KEY AUTOINCREMENT, lstitle TEXT, user_id INTEGER, task TEXT)")
+db.run("CREATE TABLE IF NOT EXISTS tasks (listid INTEGER PRIMARY KEY AUTOINCREMENT, lstitle TEXT, user_id INTEGER)")
+db.run("CREATE TABLE IF NOT EXISTS completedTasks (listid INTEGER PRIMARY KEY AUTOINCREMENT, taskid INTEGER, user_id INTEGER, task TEXT)")
 
 
 
@@ -77,6 +77,15 @@ async function getUserByUsername(username) {
 }
 
 
+async function createListdb(user_id, lstitle) {
+    return new Promise((resolve, reject) => {
+        db.get("INSERT INTO taskAccount (user_id, lstitle) VALUES (?, ?)", [user_id, lstitle], (err, row) => {
+            if (err) reject(err)
+            else resolve(row)
+        })
+    })
+}
+
 
 async function login(username, password) {
     const user = (await getUserByUsername(username))
@@ -109,5 +118,6 @@ module.exports = {
     userExists,
     login,
     getUserByUsername,
-    completedTasksInit
+    completedTasksInit,
+    createListdb
 };

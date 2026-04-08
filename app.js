@@ -20,6 +20,7 @@ app.use(cookieParser())
 const port = 3001;
 //routers
 const { usersRouter } = require("./routes/users");
+const { createListdb } = require("./models/usersdb");
 app.use("/users", usersRouter);
 
 
@@ -61,3 +62,20 @@ app.get('/', (req, res) => {
 
   res.render('index', { username: username });
 });
+
+app.post('/', async (req, res) => {
+    const username = 'profile' // value if user is not authenticated 
+    const newlist = req.body.createList
+const listoption = req.body.select_list
+  
+          // checking if the user is signed in 
+    if (req.user && req.user.id) {
+    username = req.user.name; // if the user is actually signed in, their nickname from the payload will be displayed
+  } 
+
+  console.log(newlist)
+  await(createListdb(user.id, newlist))
+
+  res.render('index', { username: username, listoption: newlist});
+})
+

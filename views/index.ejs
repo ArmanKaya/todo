@@ -136,7 +136,6 @@
 </header>
 
 <div class="container">
-<img src="bust-in-silhouette_1f464.png">
 
   <!-- Create list -->
   <section class="card">
@@ -146,23 +145,29 @@
   </section>
 
   <!-- Existing lists -->
-  <section class="card">
-    <h2>Lister med notater</h2>
-    <p>1 - Skolearbeid</p>
-    <p>2 - Samfunnsfag Notater</p>
-  </section>
+<div style="display:flex; flex-direction:column; gap:10px;">
+  <h2>Lister med notater</h2>
+  
+  <div class="row">
+    <form action="/" method="POST">
+    <input type="text" name="createList" id="createList" placeholder="Navn på ny liste" />
+    <button type="submit">Legg til</button>
+    </form>
+  </div>
+</div>
 
   <!-- Todo list -->
   <section class="card">
     <h2>Oppretter ny Todo-liste</h2>
 
-    <select>
-      <option disabled selected>Velg liste</option>
-      <option value="handleliste">Handleliste</option>
-      <option value="skolearbeid">Skolearbeid</option>
-      <option value="samfunnsfag">Samfunnsfag Notater</option>
+    <form action="/" method="POST">
+      
+    <select name="select_list" id="select_list" onchange="this.form.submit()">
+    <option value="option1" name="listoption">hi</option>      
     </select>
-
+    <option value="as"></option>
+    </select>
+    </form>
     <div class="todo">
       <input type="checkbox" />
       <span>Kjøpe melk</span>
