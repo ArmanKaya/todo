@@ -86,6 +86,15 @@ async function createListdb(user_id, lstitle) {
     })
 }
 
+async function getListsByUsername(userid) {
+    return new Promise((resolve, reject) => {
+        db.all("SELECT * FROM taskAccount WHERE user_id = ?", [userid], (err, rows) => {
+            if (err) reject(err)
+            else resolve(rows) // ✅ now an array
+        })
+    })
+}
+
 
 async function login(username, password) {
     const user = (await getUserByUsername(username))
@@ -117,7 +126,7 @@ module.exports = {
     createAccount,
     userExists,
     login,
-    getUserByUsername,
+    getListsByUsername,
     completedTasksInit,
     createListdb
 };

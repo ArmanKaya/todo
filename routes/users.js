@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 const sqlite = require("sqlite3")
 const db = sqlite
 
-const { createUser, userExists, login, createAccount, getUserByUsername, completedTasksInit } = require("../models/usersdb")
+const { createUser, userExists, login, createAccount, getListsByUsername, completedTasksInit } = require("../models/usersdb")
 
 usersRouter.get("/profile", (req, res) => {
   res.render("profile")
