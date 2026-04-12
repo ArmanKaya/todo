@@ -227,7 +227,6 @@
     <section class="card">
       <h2>Administrer Todo-liste</h2>
 
-      <form action="/" method="POST">
         <form method="GET">
           <select name="select_list" onchange="this.form.submit()">
             <% if (lists.length===0) { %>
@@ -243,7 +242,7 @@
         </form>
         <option value="as"></option>
         </select>
-      </form>
+
 
       <div style="margin-top: 1rem;">
           <div class="todo">
@@ -273,6 +272,8 @@
 
     </section>
 
+
+    
   </div>
 
 </body>
