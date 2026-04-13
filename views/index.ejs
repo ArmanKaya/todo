@@ -1,258 +1,116 @@
 <!DOCTYPE html>
 <html lang="no">
-
 <head>
-  <meta charset="UTF-8" />
-  <title>Todo-notater</title>
-
-  <style>
-    :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --accent: #38bdf8;
-      --accent-hover: #0ea5e9;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --input-bg: #0f172a;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', system-ui, sans-serif;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text-main);
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      padding: 1rem 2rem;
-      background: rgba(30, 41, 59, 0.8);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .container {
-      max-width: 650px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
-    }
-
-    .card {
-      background: var(--card-bg);
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-    }
-
-    input, select {
-      width: 100%;
-      padding: 0.7rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: white;
-    }
-
-    button {
-      padding: 0.7rem 1rem;
-      background: var(--accent);
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .todo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0.5rem;
-    }
-
-    .completed span {
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-
-    .quick-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .outline {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Todo-notater</title>
+<style>
+:root {
+  --bg: #020617; --card: #1e293b; --accent: #38bdf8; --text: #f8fafc; --muted: #94a3b8; --border: #334155;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2.5rem; background: #0f172a; border-bottom: 2px solid var(--accent); flex-shrink: 0; }
+.profile-link { background: var(--accent); color: #020617; padding: 0.6rem 1.4rem; border-radius: 50px; text-decoration: none; font-weight: 800; }
+.container { display: flex; gap: 2rem; padding: 2rem; overflow-x: auto; flex: 1; align-items: flex-start; }
+.card { background: var(--card); padding: 1.8rem; border-radius: 24px; border: 1px solid var(--border); min-width: 400px; max-height: 80vh; display: flex; flex-direction: column; }
+.scroll-area { flex: 1; overflow-y: auto; margin-bottom: 1rem; }
+h3 { margin-bottom: 1.2rem; color: var(--accent); letter-spacing: 1px; }
+input, select, textarea { width: 100%; padding: 0.8rem; margin: 0.5rem 0; border-radius: 12px; border: 1px solid var(--border); background: #0f172a; color: white; }
+button { background: var(--accent); color: #020617; border: none; padding: 0.8rem; border-radius: 12px; cursor: pointer; font-weight: 700; width: 100%; }
+.smallbtn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 4px 10px; font-size: 11px; width: auto; border-radius: 8px; cursor: pointer; }
+.todo, .note-item { padding: 1rem; border: 1px solid var(--border); margin-bottom: 0.8rem; border-radius: 12px; background: rgba(255,255,255,0.02); }
+.todo.completed span { text-decoration: line-through; opacity: 0.5; }
+summary { font-size: 0.8rem; color: var(--accent); cursor: pointer; margin-top: 10px; list-style: none; }
+summary:hover { text-decoration: underline; }
+</style>
 </head>
-
 <body>
 
-  <div class="topbar">
-    <h1>Todo-notater</h1>
-    <a href="/users/profile">👤 <%= username %></a>
-  </div>
+<header class="topbar">
+  <h1>Todo-notater</h1>
+  <a href="/users/profile" class="profile-link">👤 <%= username.toUpperCase() %></a>
+</header>
 
-  <div class="container">
-
-    <!-- Hurtigvalg -->
-    <section class="card">
-      <h2>Hurtigvalg</h2>
-
-      <div class="quick-buttons">
-        <button type="button" onclick="toggleNote()">Opprett notat</button>
-        <button class="outline">Opprett liste</button>
-      </div>
-
-      <form action="/" method="POST" id="noteForm" style="display:none;">
-        <input name="noteTitle" placeholder="Tittel">
-        <input name="noteContent" placeholder="Innhold">
-        <button type="submit">Lagre</button>
-      </form>
-    </section>
-
-    <!-- Opprett liste -->
-    <section class="card">
-      <h2>Dine lister</h2>
-
-<<<<<<< HEAD
-      <form action="/" method="POST" class="row">
-        <input name="createList" placeholder="Ny liste..." required>
-=======
-      <form action="/" method="POST">
-        <form method="GET">
-          <select name="select_list" onchange="this.form.submit()">
-            <% if (lists.length===0) { %>
-              <option>Ingen lister ennå</option>
-            <% } else { %>
-              <% lists.forEach(function(list) { %>
-                <option value="<%= list.listid %>">
-                  <%= list.lstitle || "Navnløs liste" %>
-                </option>
-              <% }); %>
-            <% } %>
-          </select>
-        </form>
-        <option value="as"></option>
-        </select>
-      </form>
-
-      <div style="margin-top: 1rem;">
-          <div class="todo">
-            <input type="checkbox" />
-            <span>Kjøpe melk</span>
-          </div>
-
-          <div class="todo completed">
-            <input type="checkbox" checked />
-            <span>Kjøpe brød</span>
-          </div>
-
-          <div class="todo">
-            <input type="checkbox" />
-            <span>Kjøpe egg</span>
-          </div>
-      </div>
-
-      <h3>Legg til oppgave</h3>
-      <div class="row">
-        <input type="text" placeholder="Hva må gjøres?" />
->>>>>>> parent of f8f1ead (almost finished missing readme and comments)
-        <button>Legg til</button>
-      </form>
-    </section>
-
-    <!-- Todo -->
-    <section class="card">
-      <h2>Todo-liste</h2>
-
-      <form method="GET">
-        <select name="select_list" onchange="this.form.submit()">
+<div class="container">
+  <div class="card">
+    <h3>📂 Lister</h3>
+    <form method="GET" action="/">
+      <select name="select_list" onchange="this.form.submit()">
+        <% if (lists.length === 0) { %>
+          <option>Ingen lister</option>
+        <% } else { %>
           <% lists.forEach(list => { %>
-            <option value="<%= list.id %>" <%= selectedListId == list.id ? "selected" : "" %>>
-              <%= list.lstitle %>
+            <option value="<%= list.id %>" <%= String(list.id) == String(selectedListId) ? "selected" : "" %>>
+              <%= list.title %>
             </option>
           <% }) %>
-        </select>
-      </form>
-
-      <!-- Tasks -->
-      <div>
-        <% if (tasks.length === 0) { %>
-          <p>Ingen oppgaver</p>
         <% } %>
-
-        <% tasks.forEach(task => { %>
-          <form action="/tasks/toggle" method="POST" class="todo <%= task.is_completed ? 'completed' : '' %>">
-            <input type="hidden" name="task_id" value="<%= task.id %>">
-            <input type="hidden" name="select_list" value="<%= selectedListId %>">
-
-            <input type="checkbox" name="is_completed"
-              onchange="this.form.submit()"
-              <%= task.is_completed ? "checked" : "" %>>
-
-            <span><%= task.content %></span>
-          </form>
-        <% }) %>
-      </div>
-
-      <!-- Add task -->
-      <form action="/" method="POST" class="row">
-        <input type="hidden" name="select_list" value="<%= selectedListId %>">
-        <input name="taskcontent" placeholder="Ny oppgave..." required>
-        <button>Legg til</button>
-      </form>
-
-    </section>
-
-<<<<<<< HEAD
-    <!-- Notes -->
-    <section class="card">
-      <h2>Notaterr</h2>
-
-      <% notes.forEach(note => { %>
-        <form action="/notes/update" method="POST">
-          <input type="hidden" name="note_id" value="<%= note.id %>">
-
-          <input name="noteTitle" value="<%= note.title %>">
-          <input name="noteContent" value="<%= note.content %>">
-
-          <div class="row">
-            <button>Lagre</button>
-        </form>
-
-        <form action="/notes/delete" method="POST">
-          <input type="hidden" name="note_id" value="<%= note.id %>">
-          <button style="background:red;">Slett</button>
-        </form>
-          </div>
-      <% }) %>
-
-    </section>
-
-=======
->>>>>>> parent of f8f1ead (almost finished missing readme and comments)
+      </select>
+    </form>
+    <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border);">
+    <h3>✨ Ny Liste</h3>
+    <form method="POST" action="/">
+      <input type="text" name="createList" placeholder="Navn på liste..." required />
+      <button type="submit">Opprett</button>
+    </form>
   </div>
 
-  <script>
-    function toggleNote() {
-      const form = document.getElementById("noteForm")
-      form.style.display = form.style.display === "none" ? "block" : "none"
-    }
-  </script>
+  <div class="card">
+    <h3>✅ Oppgaver</h3>
+    <div class="scroll-area">
+      <% tasks.forEach(task => { %>
+        <div class="todo <%= task.is_completed ? 'completed' : '' %>">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span><%= task.task_content %></span>
+            <form method="POST" action="/tasks/toggle">
+              <input type="hidden" name="task_id" value="<%= task.id %>">
+              <input type="hidden" name="is_completed" value="<%= task.is_completed ? 0 : 1 %>">
+              <input type="hidden" name="select_list" value="<%= selectedListId %>">
+              <button type="submit" class="smallbtn"><%= task.is_completed ? "Undo" : "Done" %></button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <form method="POST" action="/">
+      <input type="hidden" name="select_list" value="<%= selectedListId %>">
+      <input type="text" name="taskcontent" placeholder="Ny oppgave..." required />
+      <button type="submit">Legg til</button>
+    </form>
+  </div>
 
+  <div class="card">
+    <h3>📝 Notater</h3>
+    <div class="scroll-area">
+      <% notes.forEach(note => { %>
+        <div class="note-item">
+          <div style="display:flex; justify-content:space-between;">
+            <strong><%= note.title %></strong>
+            <form method="POST" action="/notes/delete">
+              <input type="hidden" name="note_id" value="<%= note.id %>">
+              <button class="smallbtn" style="border-color:#ef4444; color:#ef4444;">Slett</button>
+            </form>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;"><%= note.content %></p>
+          
+          <details>
+            <summary>Rediger notat</summary>
+            <form method="POST" action="/notes/edit" style="margin-top:10px; padding-top:10px; border-top: 1px solid var(--border);">
+              <input type="hidden" name="note_id" value="<%= note.id %>">
+              <input type="text" name="title" value="<%= note.title %>" placeholder="Tittel">
+              <textarea name="content" placeholder="Innhold"><%= note.content %></textarea>
+              <button type="submit" class="smallbtn" style="width:100%; margin-top:5px;">Oppdater</button>
+            </form>
+          </details>
+        </div>
+      <% }) %>
+    </div>
+    <form method="POST" action="/">
+      <input type="text" name="noteTitle" placeholder="Tittel" required />
+      <textarea name="noteContent" placeholder="Innhold..."></textarea>
+      <button type="submit">Lagre Notat</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
