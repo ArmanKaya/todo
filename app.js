@@ -23,7 +23,7 @@ const { usersRouter } = require("./routes/users");
 const { createListdb } = require("./models/usersdb");
 app.use("/users", usersRouter);
 
-const { createUser, userExists, login, createAccount, getListsByUsername, getTasksByListid, createTask, updateTaskStatus, createNote, getNotesByUserId } = require("./models/usersdb")
+const { createUser, userExists, login, createAccount, getListsByUsername, completedTasksInit } = require("./models/usersdb")
 
 
 app.listen(port, () => {
@@ -36,13 +36,14 @@ app.listen(port, () => {
 app.use((req, res, next) => {
     try {
         const payload = jwt.verify(req.cookies.token, 'shhhhh')
-        req.user = {id: payload.id, name: payload.nickname}
-        console.log(req.user)
+        user = {id: payload.id, name: payload.nickname}
+        console.log(user)
     }
 
     catch (error) {
         req.user = {}
     } finally {
+        console.log(user)
         next()
     }
     
@@ -54,72 +55,37 @@ app.use((req, res, next) => {
 
 app.get('/', async (req, res) => {
   let username = 'profile' // value if user is not authenticated 
-  const selectedListIdFromQuery = req.query.select_list
-
-  // checking if the user is signed in 
-  if (req.user && req.user.id) {
-    username = req.user.name; // if the user is actually signed in, their nickname from the payload will be displayed
-  } else {
-    return res.render('index', { username, lists: [], tasks: [], notes: [], selectedListId: "" })
-  }
-
-  const lists = await getListsByUsername(req.user.id)
-
-  let selectedListId = selectedListIdFromQuery
-  if (!selectedListId && lists.length > 0) {
-    selectedListId = String(lists[0].id)
-  }
-
   
-  let tasks = []
-  if (selectedListId) {
-    tasks = await getTasksByListid(selectedListId)
+          // checking if the user is signed in 
+    if (req.user && req.user.id) {
+    username = req.user.name; // if the user is actually signed in, their nickname from the payload will be displayed
   }
+  
+  lists = await(getListsByUsername(user.id))
 
-  const notes = await getNotesByUserId(req.user.id)
+  console.log(lists);
+  console.log(typeof lists);
 
-  res.render('index', { username: username, lists, tasks, notes, selectedListId })
-})
+  res.render('index', { username: username, lists});
+});
 
 app.post('/', async (req, res) => {
+    let username = 'profile' // value if user is not authenticated 
     const newlist = req.body.createList
     const listoption = req.body.select_list
-    const taskcontent = req.body.taskcontent
-    const noteTitle = req.body.noteTitle
-    const noteContent = req.body.noteContent
-
-    if (!req.user || !req.user.id) {
-      return res.redirect("/users/login")
-    }
-
-    if (newlist) {
-      await createListdb(req.user.id, newlist)
-      return res.redirect("/" + newListId)
-    }
-
-    if (taskcontent && listoption) {
-      await createTask(listoption, taskcontent, 0)
-      return res.redirect("/?select_list=" + listoption)
-    }
-
-    if (noteTitle || noteContent) {
-      await createNote(req.user.id, noteTitle, noteContent)
-      return res.redirect("/")
-    }
-
-    return res.redirect("/")
-})
-
-app.post("/tasks/toggle", async (req, res) => {
-  const taskId = req.body.task_id
-  const isCompleted = req.body.is_completed ? 1 : 0
-  const selectedListId = req.body.select_list
-
-  await updateTaskStatus(taskId, isCompleted)
-
-  if (selectedListId) {
-    return res.redirect("/?select_list=" + selectedListId)
+  
+          // checking if the user is signed in 
+  if (user) {
+    username = user.name; // if the user is actually signed in, their nickname from the payload will be displayed
+  } else {
+    console.log("user is not signed in")
   }
 
-  return res.redirect("/")
+  lists = await(getListsByUsername(user.id))
+
+
+  
+  await(createListdb(user.id, newlist))
+  res.render('index', { username: username, listoption: newlist, lists});
 })
+

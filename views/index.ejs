@@ -128,8 +128,49 @@
     <section class="card">
       <h2>Dine lister</h2>
 
+<<<<<<< HEAD
       <form action="/" method="POST" class="row">
         <input name="createList" placeholder="Ny liste..." required>
+=======
+      <form action="/" method="POST">
+        <form method="GET">
+          <select name="select_list" onchange="this.form.submit()">
+            <% if (lists.length===0) { %>
+              <option>Ingen lister ennå</option>
+            <% } else { %>
+              <% lists.forEach(function(list) { %>
+                <option value="<%= list.listid %>">
+                  <%= list.lstitle || "Navnløs liste" %>
+                </option>
+              <% }); %>
+            <% } %>
+          </select>
+        </form>
+        <option value="as"></option>
+        </select>
+      </form>
+
+      <div style="margin-top: 1rem;">
+          <div class="todo">
+            <input type="checkbox" />
+            <span>Kjøpe melk</span>
+          </div>
+
+          <div class="todo completed">
+            <input type="checkbox" checked />
+            <span>Kjøpe brød</span>
+          </div>
+
+          <div class="todo">
+            <input type="checkbox" />
+            <span>Kjøpe egg</span>
+          </div>
+      </div>
+
+      <h3>Legg til oppgave</h3>
+      <div class="row">
+        <input type="text" placeholder="Hva må gjøres?" />
+>>>>>>> parent of f8f1ead (almost finished missing readme and comments)
         <button>Legg til</button>
       </form>
     </section>
@@ -177,6 +218,7 @@
 
     </section>
 
+<<<<<<< HEAD
     <!-- Notes -->
     <section class="card">
       <h2>Notaterr</h2>
@@ -201,6 +243,8 @@
 
     </section>
 
+=======
+>>>>>>> parent of f8f1ead (almost finished missing readme and comments)
   </div>
 
   <script>
