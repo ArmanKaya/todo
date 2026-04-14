@@ -32,6 +32,7 @@ const {
   getNotesByUserId,
   updateNote,
   deleteNote,
+  createUser
 } = require("./models/usersdb");
 
 // LISTEN (MUST BE ACTIVE OR EVERYTHING "AUTO EXITS")
@@ -128,15 +129,11 @@ app.post("/tasks/toggle", async (req, res) => {
 
   if (!req.user?.id) return res.redirect("/users/login");
 
-  const completed = is_completed ? 1 : 0;
+  const completed = Number(is_completed); 
 
   await updateTaskStatus(task_id, completed);
 
-  if (select_list) {
-    return res.redirect("/?select_list=" + select_list);
-  }
-
-  return res.redirect("/");
+  return res.redirect("/?select_list=" + select_list);
 });
 
 // NOTES DELETE

@@ -11,6 +11,8 @@ usersRouter.get("/profile", (req, res) => {
   res.render("profile")
 });
 
+
+
 usersRouter.get("/register", (req, res) => {
   res.render("register")
 });
