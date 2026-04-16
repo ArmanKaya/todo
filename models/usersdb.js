@@ -20,14 +20,13 @@ async function createUser(username, password) {
         "INSERT INTO users (name, password) VALUES (?, ?)",
         [username, hash],
         function (err) {
-          if (err) reject(err);
-          else resolve(this.lastID);
+          if (err) return reject(err); // <-- add return
+          resolve(this.lastID);
         }
       );
     });
   });
 }
-
 async function userExists(username) {
   return new Promise((resolve, reject) => {
     db.get("SELECT * FROM users WHERE name = ?", [username], (err, row) => {
