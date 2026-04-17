@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 const sqlite = require("sqlite3")
 const db = sqlite
 
-const { createUser, userExists, login, getListsByUsername, completedTasksInit } = require("../models/usersdb")
+const { createUser, userExists, login, getListsByUsername } = require("../models/usersdb")
 
 usersRouter.get("/profile", (req, res) => {
   res.render("profile")
@@ -26,8 +26,7 @@ usersRouter.post("/register", async (req, res) => {
     console.log("user creating", username, password, await userExists(username))
     if (!username || !password || await userExists(username)) { return res.status(400).render("register", { alert: "bruker med lik informasjon eksisterer allerede" })}
     const newUserId = await createUser(username, password)
-    await createUser(newUserId)
-    await completedTasksInit(newUserId)
+    await createUser(username, password)
     console.log(username, password)
     res.redirect("/users/login")
 });
