@@ -19,7 +19,6 @@ const port = 3001;
 // ROUTERS
 const { usersRouter } = require("./routes/users");
 
-// IMPORTANT: this is what makes /users/profile work
 app.use("/users", usersRouter);
 
 const {
@@ -35,7 +34,6 @@ const {
   createUser
 } = require("./models/usersdb");
 
-// LISTEN (MUST BE ACTIVE OR EVERYTHING "AUTO EXITS")
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
@@ -52,7 +50,7 @@ app.use((req, res, next) => {
   }
 });
 
-// HOME
+// homepage
 app.get("/", async (req, res) => {
   let username = "profile";
   const selectedListIdFromQuery = req.query.select_list;
@@ -93,7 +91,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-// MAIN POST
+// homepage post
 app.post("/", async (req, res) => {
   const newlist = req.body.createList;
   const listoption = req.body.select_list;
