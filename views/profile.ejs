@@ -1,141 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile Page</title>
+    <title>Min Profil</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #38bdf8;
-            --accent-hover: #0ea5e9;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --btn-secondary: #334155;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --accent: #2563eb;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
         }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg);
             margin: 0;
-            padding: 0;
-            color: var(--text-main);
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            color: var(--text-main);
         }
 
         .container {
             width: 100%;
-            max-width: 500px;
-            margin: 20px;
-            padding: 3rem 2rem;
+            max-width: 450px;
+            padding: 3rem 2.5rem;
             background-color: var(--card-bg);
-            border-radius: 20px;
+            border-radius: 16px;
             border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
 
-        h2 {
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            color: var(--text-main);
-        }
-
-        .profile-info {
-            margin-bottom: 2rem;
-        }
-
-        /* Standard buttons if you add them later */
-        button {
-            padding: 0.8rem 1.5rem;
-            margin: 10px;
-            background-color: var(--accent);
-            color: #0f172a;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        button:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .offline-message {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
+        .avatar-placeholder {
+            width: 64px;
+            height: 64px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             color: var(--text-muted);
+        }
+
+        h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .status-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
         }
 
         .links {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 1.5rem;
+            gap: 10px;
         }
 
         .links a {
             display: block;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--btn-secondary);
-            color: var(--text-main);
+            padding: 0.75rem;
             text-decoration: none;
-            border-radius: 10px;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            transition: all 0.2s ease;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
-        .links a:hover {
-            background-color: #475569;
-            border-color: var(--text-muted);
-            transform: translateY(-1px);
-        }
-
-        /* Make the first link (usually Login) pop more */
-        .links a:first-child {
+        .btn-primary {
             background-color: var(--accent);
-            color: #0f172a;
-            border: none;
-        }
-        
-        .links a:first-child:hover {
-            background-color: var(--accent-hover);
+            color: white !important;
         }
 
-        #not-logged-in p {
-            margin-bottom: 1.5rem;
-            font-weight: 500;
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg);
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
-        <div id="profile-section">
-            <div class="offline-message" id="not-logged-in">
-                <h2>Profil</h2>
-                <p>You are not logged in.</p>
-                <div class="links">
-                    <a href="login">Log In</a>
-                    <a href="register">Register</a>
-                </div>
-            </div>
+        <div class="avatar-placeholder">👤</div>
+        <h2>Din Profil</h2>
+        <p class="status-text">Du er for øyeblikket ikke logget inn.</p>
+        
+        <div class="links">
+            <a href="login" class="btn-primary">Logg inn</a>
+            <a href="register" class="btn-outline">Opprett konto</a>
+            <a href="/" class="btn-outline" style="margin-top: 10px; border: none; font-size: 0.85rem; color: var(--text-muted);">Tilbake til forsiden</a>
         </div>
     </div>
-
 </body>
-
 </html>

@@ -2,224 +2,230 @@
 <html lang="no">
 <head>
     <meta charset="UTF-8" />
-    <title>Focus Todo</title>
+    <title>Pro-Notater</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --sidebar: #1e293b;
-            --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.2);
-            --text: #f1f5f9;
-            --muted: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --bg: #f8fafc;
+            --sidebar: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
+            color: var(--text-main);
             display: grid;
-            grid-template-columns: 280px 1fr;
-            grid-template-rows: 70px 1fr;
+            grid-template-columns: 260px 1fr;
             height: 100vh;
-            overflow: hidden;
         }
 
-        /* Topbar */
-        .topbar {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            background: var(--sidebar);
-            border-bottom: 1px solid var(--border);
-            z-index: 10;
-        }
-
-        .profile-link {
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 0.5rem 1.2rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .profile-link:hover {
-            background: var(--accent-glow);
-        }
-
-        /* Sidebar */
+        /* Sidebar Navigation */
         .sidebar {
             background: var(--sidebar);
-            padding: 2rem;
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Content Area */
+        .main-content {
+            overflow-y: auto;
+            padding: 2rem 3rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .profile-pill {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Layout Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
         }
 
-        /* Main Content */
-        .main-content {
-            padding: 2rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .section-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-weight: 600;
         }
 
-        .view-card {
+        .card {
             background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            width: 100%;
-            max-width: 800px;
-            padding: 2.5rem;
-            border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            margin-bottom: 2rem;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        h3 { margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--accent); }
-
-        /* Form Elements */
+        /* Elements */
         input, select, textarea {
             width: 100%;
-            padding: 1rem;
-            margin: 0.8rem 0;
-            border-radius: 12px;
+            padding: 0.625rem 0.875rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
             border: 1px solid var(--border);
-            background: #0f172a;
-            color: white;
-            font-size: 1rem;
+            background: #fff;
+            font-size: 0.95rem;
+            transition: all 0.2s;
         }
 
-        input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        input:focus { outline: none; border-color: var(--accent); ring: 2px solid #dbeafe; }
 
         button {
             background: var(--accent);
-            color: #020617;
+            color: white;
             border: none;
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 700;
-            transition: transform 0.1s;
+            transition: opacity 0.2s;
         }
 
-        button:active { transform: scale(0.98); }
+        button:hover { opacity: 0.9; }
 
-        /* Items */
-        .todo, .note-item {
-            padding: 1.2rem;
-            border: 1px solid var(--border);
-            margin-bottom: 1rem;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            transition: 0.2s;
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .todo:hover { border-color: var(--accent); }
-        .todo.completed { opacity: 0.5; }
-        .todo.completed span { text-decoration: line-through; }
+        .item:last-child { border-bottom: none; }
 
-        .smallbtn {
+        .btn-ghost {
             background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 6px 12px;
-            font-size: 12px;
-            width: auto;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            border: 1px solid var(--border);
         }
+
+        .btn-ghost:hover { background: #f8fafc; color: var(--text-main); }
+
+        .completed-text { text-decoration: line-through; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
-<header class="topbar">
-    <h1>Todo-notater</h1>
-    <a href="/users/profile" class="profile-link">👤 <%= username.toUpperCase() %></a>
-</header>
-
 <aside class="sidebar">
-    <div>
-        <h3>📂 Lister</h3>
-        <form method="GET" action="/">
-            <select name="select_list" onchange="this.form.submit()">
-                <% if (lists.length === 0) { %>
-                    <option>Ingen lister</option>
-                <% } else { %>
-                    <% lists.forEach(list => { %>
-                        <option value="<%= list.id %>" <%= String(list.id) == String(selectedListId) ? "selected" : "" %>>
-                            <%= list.title %>
-                        </option>
-                    <% }) %>
-                <% } %>
-            </select>
-        </form>
+    <div class="logo">
+        <span style="color: var(--accent)">●</span> Dashboard
     </div>
     
-    <div style="margin-top: auto;">
-        <h3>✨ Ny Liste</h3>
+    <p class="section-title">Mine Lister</p>
+    <form method="GET" action="/">
+        <select name="select_list" onchange="this.form.submit()">
+            <% lists.forEach(list => { %>
+                <option value="<%= list.id %>" <%= String(list.id) == String(selectedListId) ? "selected" : "" %>>
+                    <%= list.title %>
+                </option>
+            <% }) %>
+        </select>
+    </form>
+
+    <div style="margin-top: auto; padding-top: 2rem;">
+        <p class="section-title">Ny Liste</p>
         <form method="POST" action="/">
-            <input type="text" name="createList" placeholder="Navn..." required />
-            <button type="submit" style="width: 100%;">Opprett</button>
+            <input type="text" name="createList" placeholder="Navn på liste..." required>
+            <button type="submit" style="width:100%">Opprett</button>
         </form>
     </div>
 </aside>
 
 <main class="main-content">
-    <div class="view-card">
-        <h3>✅ Oppgaver</h3>
-        <div class="scroll-area">
-            <% tasks.forEach(task => { %>
-                <div class="todo <%= task.is_completed ? 'completed' : '' %>">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span><%= task.task_content %></span>
-                        <form method="POST" action="/tasks/toggle">
-                            <input type="hidden" name="task_id" value="<%= task.id %>">
-                            <input type="hidden" name="is_completed" value="<%= task.is_completed ? 0 : 1 %>">
-                            <input type="hidden" name="select_list" value="<%= selectedListId %>">
-                            <button type="submit" class="smallbtn"><%= task.is_completed ? "Undo" : "Done" %></button>
-                        </form>
-                    </div>
-                </div>
-            <% }) %>
-        </div>
-        <form method="POST" action="/" style="margin-top: 1.5rem; display: flex; gap: 10px;">
-            <input type="hidden" name="select_list" value="<%= selectedListId %>">
-            <input type="text" name="taskcontent" placeholder="Hva må gjøres?" required style="margin:0;">
-            <button type="submit" style="width: 120px;">Legg til</button>
-        </form>
+    <div class="header">
+        <h1 style="font-size: 1.5rem; font-weight: 600;">Oversikt</h1>
+        <a href="/users/profile" class="profile-pill">
+            <%= username %>
+        </a>
     </div>
 
-    <div class="view-card">
-        <h3>📝 Notater</h3>
-        <div class="scroll-area">
-            <% notes.forEach(note => { %>
-                <div class="note-item">
-                    <div style="display:flex; justify-content:space-between; align-items: flex-start;">
-                        <div>
-                            <strong><%= note.title %></strong>
-                            <p style="font-size: 0.9rem; color: var(--muted); margin-top: 8px;"><%= note.content %></p>
+    <div class="grid">
+        <div>
+            <p class="section-title">Oppgaver</p>
+            <div class="card">
+                <div style="margin-bottom: 1.5rem;">
+                    <% tasks.forEach(task => { %>
+                        <div class="item">
+                            <span class="<%= task.is_completed ? 'completed-text' : '' %>">
+                                <%= task.task_content %>
+                            </span>
+                            <form method="POST" action="/tasks/toggle">
+                                <input type="hidden" name="task_id" value="<%= task.id %>">
+                                <input type="hidden" name="is_completed" value="<%= task.is_completed ? 0 : 1 %>">
+                                <input type="hidden" name="select_list" value="<%= selectedListId %>">
+                                <button type="submit" class="btn-ghost"><%= task.is_completed ? 'Angre' : 'Ferdig' %></button>
+                            </form>
                         </div>
-                        <form method="POST" action="/notes/delete">
-                            <input type="hidden" name="note_id" value="<%= note.id %>">
-                            <button class="smallbtn" style="border-color:#ef4444; color:#ef4444;">Slett</button>
-                        </form>
-                    </div>
+                    <% }) %>
                 </div>
-            <% }) %>
+                <form method="POST" action="/">
+                    <input type="hidden" name="select_list" value="<%= selectedListId %>">
+                    <input type="text" name="taskcontent" placeholder="Ny oppgave..." required>
+                    <button type="submit" style="width:100%">Legg til oppgave</button>
+                </form>
+            </div>
         </div>
-        <form method="POST" action="/">
-            <input type="text" name="noteTitle" placeholder="Tittel" required />
-            <textarea name="noteContent" placeholder="Skriv noe lurt..." rows="3"></textarea>
-            <button type="submit" style="width: 100%;">Lagre Notat</button>
-        </form>
+
+        <div>
+            <p class="section-title">Notater</p>
+            <div class="card">
+                <div style="margin-bottom: 1.5rem;">
+                    <% notes.forEach(note => { %>
+                        <div style="padding: 1rem 0; border-bottom: 1px solid #f1f5f9;">
+                            <div style="display:flex; justify-content:space-between; align-items: flex-start;">
+                                <h4 style="font-size: 1rem; margin-bottom: 4px;"><%= note.title %></h4>
+                                <form method="POST" action="/notes/delete">
+                                    <input type="hidden" name="note_id" value="<%= note.id %>">
+                                    <button style="background:none; color:#ef4444; border:none; padding:0; cursor:pointer; font-size: 0.75rem;">Slett</button>
+                                </form>
+                            </div>
+                            <p style="font-size: 0.875rem; color: var(--text-muted);"><%= note.content %></p>
+                        </div>
+                    <% }) %>
+                </div>
+                <form method="POST" action="/">
+                    <input type="text" name="noteTitle" placeholder="Tittel" required>
+                    <textarea name="noteContent" placeholder="Innhold..." rows="3"></textarea>
+                    <button type="submit" style="width:100%; background: #0f172a;">Lagre notat</button>
+                </form>
+            </div>
+        </div>
     </div>
 </main>
 
